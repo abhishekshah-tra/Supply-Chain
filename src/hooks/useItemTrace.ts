@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import {
   addItemComment,
   applyMilestoneFilters,
@@ -11,9 +11,7 @@ import {
   type TraceFilters,
 } from '../types/itemTrace'
 
-type LoadState = 'idle' | 'loading' | 'empty' | 'ready' | 'error'
-
-const SEARCH_SKELETON_MS = 1000
+type LoadState = 'idle' | 'empty' | 'ready' | 'error'
 
 interface UseItemTraceResult {
   query: string
@@ -45,16 +43,6 @@ export function useItemTrace(): UseItemTraceResult {
   const [filters, setFilters] = useState<TraceFilters>(defaultFilters)
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [lastUpdated, setLastUpdated] = useState(() => new Date('2025-05-20T10:30:00'))
-  const loadTimerRef = useRef<number | null>(null)
-
-  const clearLoadTimer = useCallback(() => {
-    if (loadTimerRef.current !== null) {
-      window.clearTimeout(loadTimerRef.current)
-      loadTimerRef.current = null
-    }
-  }, [])
-
-  useEffect(() => () => clearLoadTimer(), [clearLoadTimer])
 
   const load = useCallback((identifier: string) => {
     const value = identifier.trim()
@@ -95,23 +83,9 @@ export function useItemTrace(): UseItemTraceResult {
       const next = value ?? query
       setQuery(next)
       setActiveQuery(next)
-      clearLoadTimer()
-
-      if (!next.trim()) {
-        load(next)
-        return
-      }
-
-      setTrace(null)
-      setSelectedMilestoneId(null)
-      setErrorMessage('')
-      setLoadState('loading')
-      loadTimerRef.current = window.setTimeout(() => {
-        load(next)
-        loadTimerRef.current = null
-      }, SEARCH_SKELETON_MS)
+      load(next)
     },
-    [clearLoadTimer, load, query],
+    [load, query],
   )
 
   const refresh = useCallback(() => {

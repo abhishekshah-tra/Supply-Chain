@@ -5,10 +5,9 @@ import { EMPTY_DESCRIPTION, EMPTY_TITLE } from '../../constants/status'
 
 interface EmptyStateProps {
   variant?: 'idle' | 'empty'
-  onHintClick?: (value: string) => void
 }
 
-export function EmptyState({ variant = 'idle', onHintClick }: EmptyStateProps) {
+export function EmptyState({ variant = 'idle' }: EmptyStateProps) {
   const isNoResult = variant === 'empty'
   return (
     <div className="state-panel" role="status">
@@ -21,13 +20,6 @@ export function EmptyState({ variant = 'idle', onHintClick }: EmptyStateProps) {
           ? 'Try another PO, Shipment, Carton, SKU or Item identifier.'
           : EMPTY_DESCRIPTION}
       </p>
-      {/* <button
-        type="button"
-        className="btn btn--primary"
-        onClick={() => onHintClick?.('PO123456')}
-      >
-        Try sample PO123456
-      </button> */}
     </div>
   )
 }

@@ -11,8 +11,8 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: 'Supply Chain Intelligence',
-    template: '%s | Supply Chain Intelligence',
+    default: 'BFL Digital Twin',
+    template: '%s | BFL Digital Twin',
   },
   description:
     "Real-time visibility of an item's journey across the supply chain and warehouse network",

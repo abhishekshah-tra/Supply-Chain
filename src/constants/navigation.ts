@@ -50,7 +50,7 @@ export const HELP_ITEM: NavItem = {
   icon: 'help',
 }
 
-export const APP_NAME = 'Supply Chain Intelligence'
+export const APP_NAME = 'BFL Digital Twin'
 export const PAGE_TITLE = 'End to End Item Trace'
 export const PAGE_SUBTITLE =
   "Real-time visibility of an item's journey across the supply chain and warehouse network"

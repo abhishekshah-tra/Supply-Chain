@@ -82,7 +82,6 @@ export function EndToEndTracePage() {
   }, [trace, selectedMilestoneId])
 
   const events = trace ? getEventLog(trace.item.poNumber) : []
-  const showSkeleton = isRefreshing || loadState === 'loading'
 
   return (
     <div className="page">
@@ -102,21 +101,21 @@ export function EndToEndTracePage() {
           filters={filters}
         />
 
-        {showSkeleton ? <DashboardSkeleton /> : null}
+        {isRefreshing ? <DashboardSkeleton /> : null}
 
-        {!showSkeleton && loadState === 'error' ? (
+        {!isRefreshing && loadState === 'error' ? (
           <ErrorState message={errorMessage} onRetry={retry} />
         ) : null}
 
-        {!showSkeleton && loadState === 'idle' ? (
-          <EmptyState variant="idle" onHintClick={search} />
+        {!isRefreshing && loadState === 'idle' ? (
+          <EmptyState variant="idle" />
         ) : null}
 
-        {!showSkeleton && loadState === 'empty' ? (
-          <EmptyState variant="empty" onHintClick={search} />
+        {!isRefreshing && loadState === 'empty' ? (
+          <EmptyState variant="empty" />
         ) : null}
 
-        {!showSkeleton && loadState === 'ready' && trace ? (
+        {!isRefreshing && loadState === 'ready' && trace ? (
           <>
             <KPIOverview kpis={trace.kpis} />
             <JourneyFlow
