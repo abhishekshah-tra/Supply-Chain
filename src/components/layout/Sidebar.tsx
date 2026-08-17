@@ -1,0 +1,89 @@
+'use client'
+
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import {
+  BarChart3,
+  Bell,
+  Boxes,
+  CircleHelp,
+  FlaskConical,
+  Cog,
+  GitFork,
+  Home,
+  Network,
+  Settings,
+  TowerControl,
+  Workflow,
+} from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
+import { APP_NAME, HELP_ITEM, NAV_ITEMS } from '../../constants/navigation'
+
+const ICONS: Record<string, LucideIcon> = {
+  home: Home,
+  tower: TowerControl,
+  route: Workflow,
+  network: Network,
+  package: Boxes,
+  cog: Cog,
+  flask: FlaskConical,
+  chart: BarChart3,
+  bell: Bell,
+  settings: Settings,
+  help: CircleHelp,
+}
+
+interface SidebarProps {
+  collapsed: boolean
+  mobileOpen: boolean
+  onNavigate: () => void
+}
+
+export function Sidebar({ collapsed, mobileOpen, onNavigate }: SidebarProps) {
+  const pathname = usePathname()
+
+  return (
+    <aside
+      className={`sidebar ${collapsed ? 'is-collapsed' : ''} ${mobileOpen ? 'is-open' : ''}`}
+      aria-label="Primary"
+    >
+      <div className="sidebar__brand">
+        <span className="brand-mark" aria-hidden="true">
+          <GitFork size={16} />
+        </span>
+        <span className="sidebar__brand-text">{APP_NAME}</span>
+      </div>
+
+      <nav className="sidebar__nav">
+        {NAV_ITEMS.map((item) => {
+          const Icon = ICONS[item.icon] ?? Home
+          const isActive = pathname === item.path
+          return (
+            <Link
+              key={item.id}
+              href={item.path}
+              className={`sidebar__link ${isActive ? 'is-active' : ''}`}
+              onClick={onNavigate}
+              title={collapsed ? item.label : undefined}
+            >
+              <Icon size={18} strokeWidth={1.75} aria-hidden="true" />
+              <span>{item.label}</span>
+            </Link>
+          )
+        })}
+      </nav>
+
+      <div className="sidebar__footer">
+        <Link
+          href={HELP_ITEM.path}
+          className={`sidebar__link ${pathname === HELP_ITEM.path ? 'is-active' : ''}`}
+          onClick={onNavigate}
+          title={collapsed ? HELP_ITEM.label : undefined}
+        >
+          <CircleHelp size={18} strokeWidth={1.75} aria-hidden="true" />
+          <span>{HELP_ITEM.label}</span>
+        </Link>
+      </div>
+    </aside>
+  )
+}
